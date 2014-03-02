@@ -4,13 +4,17 @@ var q = require('q'),
 fetcher = new Fetcher()
 
 fetcher.createFixture('categories/programmes/scotland').then(function (fixture) {
-    console.log(fixture.data.category_programmes.elements[5].master_brand.titles.small)
     fixture.getElement(5).setMasterbrand('Hai_Guys');
-    console.log(fixture.data.category_programmes.elements[5].master_brand.titles.small)
 
-    console.log(fixture.data.category_programmes.elements[5].initial_children[0].title)
     fixture.getElement(5).getEpisode().data.title = 'boo';
-    console.log(fixture.data.category_programmes.elements[5].initial_children[0].title)
+}).done();
+
+fetcher.createFixture('home/highlights').then(function (fixture) {
+    fixture.getElement(2).getChild(0).data.title = 'New Episode title in group';
+}).done();
+
+fetcher.createFixture('home/highlights').then(function (fixture) {
+    fixture.getElement(1).getVersion().data.kind = 'audio-described';
 }).done();
 
 
