@@ -15,6 +15,12 @@ fetcher.createFixture('home/highlights').then(function (fixture) {
 
 fetcher.createFixture('home/highlights').then(function (fixture) {
     fixture.getElement(1).getVersion().data.kind = 'audio-described';
+
+    fixture.save();
+}).done();
+
+fetcher.createFixture('categories/programmes/sport').then(function (fixture) {
+
 }).done();
 
 
