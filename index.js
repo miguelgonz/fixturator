@@ -1,4 +1,4 @@
-var BaseFixture = require('./lib/BaseFixture'),
+var Fixture = require('./lib/Fixture'),
     ElementPool = require('./lib/ElementPool'),
     q = require('q'),
     fs = require('fs'),
@@ -44,7 +44,7 @@ FixtureCreator.prototype.createFixture = function(feedName, params) {
     else {
         feed = JSON.parse(feedJson);
 
-        fixture = new BaseFixture(feedName, feed, that.elementPool, that.fixtureConfig);
+        fixture = new Fixture(feedName, feed, that.elementPool, that.fixtureConfig);
 
         defer.resolve(fixture);
     }
