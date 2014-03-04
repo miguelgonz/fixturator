@@ -1,28 +1,51 @@
-var FixtureCreator = require('./lib/creator')
+Fixtures = require('ibl-fixture-generator');
 
-creator = new FixtureCreator({
-    savePath: './fixtures/'
-})
-// console.log(path.basename(process.argv[1]))
+creator = new Fixtures({
+    savePath: './webapp/php/lib/test/fixtures/bamboo/'
+});
 
-// fetcher.createFixture('categories/music/highlights').then(function (fixture) {
-//      fixture.getElement(5).setMasterbrand('Hai_Guys');
+creator.createFixture('categories/films/highlights').then(function (fixture) {
+    var group = fixture.insertGroup(0)
 
-//      fixture.save();
-// }).done();
+    group.set({
+        title: 'New Group title for me!',
+        stacked: true
+    }).setMasterbrand('bbc_two').getChild(0).set({
+        synopses: {
+            small: 'A brand new synopses small just making it long to really try and confuse the truncation'
+        }
+    })
 
-// fetcher.createFixture('home/highlights').then(function (fixture) {
-//     fixture.getElement(2).getChild(0).data.title = 'New Episode title in group';
-// }).done();
+    fixture.insertMostPopular(1)
+    fixture.insertGroup(2)
+    fixture.insertGroup(3)
+    fixture.insertGroup(4)
+    fixture.insertGroup(5)
+    fixture.insertGroup(6)
+    fixture.insertGroup(7)
+    fixture.save()
+}).done();
 
-// fetcher.createFixture('home/highlights').then(function (fixture) {
-//     fixture.getElement(1).getVersion().data.kind = 'audio-described';
+creator.createFixture('categories/sport/programmes').then(function (fixture) {
+    fixture.getProgramme(1).getEpisode().set({
+        title: 'Hai from fixture',
+        labels: {
+            time: 'Hai Guys'
+        }
+    }).setMasterbrand('boo_fart')
 
-//     fixture.save();
-// }).done();
+    fixture.save()
+}).done();
 
-// fetcher.createFixture('categories/sport/programmes').then(function (fixture) {
+creator.createFixture('home/highlights').then(function (fixture) {
 
-// }).done();
+    fixture.getElement(0).set({
+        title: 'Hai from fixture'
+    });
 
+    fixture.insertGroup(5).set({
+        title: 'spanking new group'
+    });
 
+    fixture.save()
+}).done();

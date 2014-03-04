@@ -65,7 +65,38 @@ If you use this method you will need to assert that everything on the new item i
 Save the fixture to a folder specified in config. Default file name is the feed name with `/` replaced with `_`.
 
 ## Elements
-All elements can be edited with the `.data` attribute, for direct manipulation. Elements should also provide helper methods which need to modify multiple attributes to be consistent such as availability (which should modify `status` and `availability` information at the same time to be useful).
+All elements can be modified with the `set()` function. Pass in an object containing the attributes you want to modify:
+
+```javascript
+
+    group.set({
+        title: 'New Group title for me!',
+        stacked: true
+    })
+```
+
+Or chain together to modify other attributes too:
+
+```javascript
+    group.set({
+        title: 'New Group title for me!',
+        stacked: true
+    }).getChild(0).set({
+        synopses: {
+            small: 'A brand new synopses'
+        }
+    });
+```
+
+Elements should also provide helper methods which need to modify multiple attributes to be consistent such as availability (which should modify `status` and `availability` information at the same time to be useful).
+
+### All elements inherit some base fuctions
+
+#### set()
+Pass in an object of data you want to  merge **into** the element, it will override/add any properties from the object to the element. Also useful for chaining methods as it returns the element again.
+
+#### setMasterbrand
+Pass in a masterbrand ID shaped thing and it will prefil fields with the ID plus the field size etc.
 
 ### Programme
 
