@@ -1,50 +1,51 @@
 var Fixture = require('./lib/Fixture'),
     ElementPool = require('./lib/ElementPool'),
+    Fetcher = require('./lib/Fetcher'),
     q = require('q'),
     fs = require('fs'),
     feedsPath = '../iblfetcher/feeds/'
 
+q.longStackSupport = true;
+
 function FixtureCreator(config) {
-    this.fixtureConfig = config;
-    this.feeds = {};
-    this.elementPool = new ElementPool();
     that = this;
-
-    var files = fs.readdirSync(feedsPath);
-
-    files.forEach(function (file, i) {
-        if (file.indexOf('.json') == -1)
-            return null;
-        jsonString = fs.readFileSync(feedsPath + file, {encoding: "utf-8"});
-        feedName = that.fileToFeedName(file);
-        that.feeds[feedName] = jsonString;
-
-        that.elementPool.processFeed(JSON.parse(jsonString));
+    that.config = config;
+    that.feeds = {};
+    that.elementPool = new ElementPool();
+    that.fetcher = new Fetcher({
+        apiKey: config.apiKey,
+        iblUrl: config.iblUrl
     });
 
-    console.log('Processed feeds, found the following elements for use')
-    console.log('Episodes:', that.elementPool.pools.Episode.length)
-    console.log('Group:',that.elementPool.pools.Group.length)
-    console.log('Programmes:',that.elementPool.pools.Programme.length)
+    that.prefetch = that.fetcher.prefetch().then(function (feeds) {
+        that.feeds = feeds;
+        for (name in feeds) {
+            var feed = feeds[name];
+            that.elementPool.processFeed(feed);
+        }
 
+        console.log('Processed feeds, found the following elements for use')
+        console.log('Episodes:', that.elementPool.pools.Episode.length)
+        console.log('Group:',that.elementPool.pools.Group.length)
+        console.log('Programmes:',that.elementPool.pools.Programme.length)
+
+    }, function (err) {
+        console.log('Error prefetching feeds', err);
+        throw err
+    });
 }
-
-FixtureCreator.prototype.fileToFeedName = function(feedName) {
-    return feedName.replace(/_/g, '/').substr(0, feedName.length - 5);
-};
 
 FixtureCreator.prototype.createFixture = function(feedName, params) {
     var defer = q.defer(),
         that = this,
         path = feedName;
 
-    feedJson = this.feeds[feedName];
-    if (feedJson === undefined)
+    feed = this.feeds[feedName];
+    if (feed === undefined)
         defer.reject('Feed not found: ' + feedName);
     else {
-        feed = JSON.parse(feedJson);
 
-        fixture = new Fixture(feedName, feed, that.elementPool, that.fixtureConfig);
+        fixture = new Fixture(feedName, feed, that.elementPool, that.config);
 
         defer.resolve(fixture);
     }

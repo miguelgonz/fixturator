@@ -5,6 +5,8 @@
   "main": "index.js",
   "repository": "",
   "dependencies": {
+    "request": "*",
+    "querystring": "0.2.0",
     "q": "*",
     "underscore": "*"
   },
