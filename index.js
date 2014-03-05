@@ -24,10 +24,12 @@ function FixtureCreator(config) {
             that.elementPool.processFeed(feed);
         }
 
-        console.log('Processed feeds, found the following elements for use')
-        console.log('Episodes:', that.elementPool.pools.Episode.length)
-        console.log('Group:',that.elementPool.pools.Group.length)
-        console.log('Programmes:',that.elementPool.pools.Programme.length)
+        if (config.debug) {
+            console.log('Processed feeds, found the following elements for use')
+            console.log('Episodes:', that.elementPool.pools.Episode.length)
+            console.log('Group:',that.elementPool.pools.Group.length)
+            console.log('Programmes:',that.elementPool.pools.Programme.length)
+        }
 
     }, function (err) {
         console.log('Error prefetching feeds', err);
@@ -37,18 +39,26 @@ function FixtureCreator(config) {
 
 FixtureCreator.prototype.createFixture = function(feedName, params) {
     var defer = q.defer(),
+        newFeedDefer = q.defer();
         that = this,
         path = feedName;
 
-    feed = this.feeds[feedName];
-    if (feed === undefined)
-        defer.reject('Feed not found: ' + feedName);
-    else {
+    feed = that.feeds[feedName];
+    if (feed === undefined) {
+        that.fetcher.fetch(feedName, params).done(function (json) {
+            that.feeds[feedName] = json;
+            newFeedDefer.resolve(json);
+        });
+    } else {
+        newFeedDefer.resolve(feed)
+    }
 
+    newFeedDefer.promise.done(function (feed) {
         fixture = new Fixture(feedName, feed, that.elementPool, that.config);
 
         defer.resolve(fixture);
-    }
+    });
+
     return defer.promise
 };
 
