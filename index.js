@@ -14,7 +14,9 @@ function FixtureCreator(config) {
     that.elementPool = new ElementPool();
     that.fetcher = new Fetcher({
         apiKey: config.apiKey,
-        iblUrl: config.iblUrl
+        iblUrl: config.iblUrl,
+        cacheDir: config.cacheDir,
+        cacheExpireTime: config.cacheExpireTime || (new Date().getTime() - (10 * 60 * 1000))
     });
 
     that.prefetch = that.fetcher.prefetch().then(function (feeds) {
