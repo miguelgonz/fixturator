@@ -5,38 +5,53 @@ Script fixtures to be generated from live data. Modify only the data you care ab
 
 Quick start
 -----------
-Create a new fixture by providing a feed name:
+Setup your fixture file, all fixtures share a common structure so copy paste is your friend:
 
 ```javascript
-creator.createFixture('categories/films/highlights')
+module.exports = function (creator, fixtureName) {
+    return creator.createFixture('categories/films/highlights').then(function (fixture) {
+        fixture.save(fixtureName);
+    })
+};
 ```
 
-Listen for when it's finished retreiving data:
+Line by line:
+ - Export your fixture to the fixture runner
+ - Create your fixture, specifying a feed name and and URL parameters
+ - `.then` will fire it's function once the fixture file is ready for use
+ - Save your fixture to the right file passed by the runner, or customised
+
+Now we can start modifying stuff, like the first items title:
 
 ```javascript
-creator.createFixture('categories/films/highlights').then(function (fixture) {
+module.exports = function (creator, fixtureName) {
+    return creator.createFixture('categories/films/highlights').then(function (fixture) {
 
-}).done()
+        fixture.getEpisode().set({
+            title: 'Hai from the fixture'
+        });
+
+        fixture.save(fixtureName)
+    })
+};
 ```
 
-Modify the first items title:
+Or labels
 
 ```javascript
-creator.createFixture('categories/films/highlights').then(function (fixture) {
-    fixture.getEpisode().data.title = 'Hai from the fixture';
-}).done()
-```
+module.exports = function (creator, fixtureName) {
+    return creator.createFixture('categories/films/highlights').then(function (fixture) {
 
-Save it to a file ready for the app to use:
+        fixture.getEpisode().set({
+            title: 'Hai from the fixture',
+            labels: {
+                editorial: 'WATCH ME!'
+            }
+        });
 
-```javascript
-creator.createFixture('categories/films/highlights').then(function (fixture) {
-    fixture.getEpisode().data.title = 'Hai from the fixture';
-    fixture.getEpisode().data.labels = {
-        time: 'WATCH ME!'
-    }
-    fixture.save();
-}).done()
+        fixture.save();
+    }).done()
+};
 ```
 
 #API
@@ -45,7 +60,9 @@ creator.createFixture('categories/films/highlights').then(function (fixture) {
 
 The base object you operate on has the following methods:
     
-#### getEpisode(n) / getProgramme(n) / getElement(n)
+```javascript
+getEpisode(n) / getProgramme(n) / getElement(n)
+```
 
 Fetches the `n`th item from the feed, will return the relevant class object.
 
@@ -55,12 +72,16 @@ e.g. Programmes feed should use `getProgramme(2)` whereas highlights feed should
 
 
 
-#### insertEpisode(n) / insertProgramme(n) / insertGroup(n) / insertMostPopular(n)
+```javascript
+insertEpisode(n) / insertProgramme(n) / insertGroup(n) / insertMostPopular(n)
+```
 
 Inserts the given type into that position in the feed. The item it will insert is randomly selected from the pool of items seen in all other iBL feeds.
 If you use this method you will need to assert that everything on the new item is as you are expecting (availability, labels, stacked group etc.).
 
-#### save()
+```javascript
+save()
+```
 
 Save the fixture to a folder specified in config. Default file name is the feed name with `/` replaced with `_`.
 
@@ -68,61 +89,78 @@ Save the fixture to a folder specified in config. Default file name is the feed 
 All elements can be modified with the `set()` function. Pass in an object containing the attributes you want to modify:
 
 ```javascript
-
-    group.set({
-        title: 'New Group title for me!',
-        stacked: true
-    })
+group.set({
+    title: 'New Group title for me!',
+    stacked: true
+})
 ```
 
 Or chain together to modify other attributes too:
 
 ```javascript
-    group.set({
-        title: 'New Group title for me!',
-        stacked: true
-    }).getChild(0).set({
-        synopses: {
-            small: 'A brand new synopses'
-        }
-    });
+group.set({
+    title: 'New Group title for me!',
+    stacked: true
+}).getChild(0).set({
+    synopses: {
+        small: 'A brand new synopses'
+    }
+});
 ```
 
-Elements should also provide helper methods which need to modify multiple attributes to be consistent such as availability (which should modify `status` and `availability` information at the same time to be useful).
+Elements should also provide helper methods which need to modify multiple attributes 
+to be consistent such as availability (which should modify `status` and 
+`availability` information at the same time to be useful).
 
 ### All elements inherit some base fuctions
 
-#### set()
+```javascript
+set()
+```
 Pass in an object of data you want to  merge **into** the element, it will override/add any properties from the object to the element. Also useful for chaining methods as it returns the element again.
 
-#### setMasterbrand
+```javascript
+setMasterbrand
+```
 Pass in a masterbrand ID shaped thing and it will prefil fields with the ID plus the field size etc.
 
 ### Programme
 
-#### getEpisode(n)
+```javascript
+getEpisode(n)
+```
 Retrevie the `n`th Episode for the programme, returns a `Episode` object.
 
-#### addEpisode(n)
+```javascript
+addEpisode(n)
+```
 Add an episode in position `n`, plucked randomly from the Pool, also ups the count for the programme. Returns the episode added.
 
-#### removeAllItems()
+```javascript
+removeAllItems()
+```
 Removes all child episodes and sets the count of episodes to 0.
 
 ### Group
 
-#### getChild(n)
+`getChild(n)``
 Retrevie the `n`th child for the group, returns a `Episode` or `Programme`object.
 
 ### Episode
 
-#### getVersion(n)
+```javascript
+getVersion(n)
+```
 Retrevie the `n`th version for the episode, returns a `Version` object.
 
-#### removeAllVersions()
+```javascript
+removeAllVersions()
+```
 Get rid of all versions on the episode. Returns the Episode.
 
-#### addVersion()
+```javascript
+addVersion()
+```
 Adds the single stored Version object, this can then be cusotmized using `set()`. returns a Version.
 
 ### Version
@@ -132,9 +170,30 @@ Currently has no methods.
 ### Construction
 
 ```javascript
-Fixtures = require('ibl-fixture-generator');
+var config = {
+        savePath: './fixtures/',
+        fixturePath: './tests/',
+        apiKey: '',
+        iblUrl: '',
+        cacheDir: './feedCache/',
+        debug: true
+    },
+    fs = require('fs'),
+    Fixtures = require('ibl-fixture-generator'),
+    creator = new Fixtures(config);
 
-creator = new Fixtures({
-    savePath: './webapp/php/lib/test/fixtures/bamboo/'
-});
+    creator.prefetch.done(function () {
+        files = fs.readdirSync('./tests')
+
+        files.forEach(function (file) {
+            stat = fs.statSync(config.fixturePath + file);
+            if (stat.isFile()) {
+                var func = require(config.fixturePath + file);
+                fixtureName = file.substr(0, file.length - 3);
+                func(creator, fixtureName);
+            }
+
+        })
+    })
+
 ```
