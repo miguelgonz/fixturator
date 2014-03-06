@@ -119,6 +119,12 @@ Retrevie the `n`th child for the group, returns a `Episode` or `Programme`object
 #### getVersion(n)
 Retrevie the `n`th version for the episode, returns a `Version` object.
 
+#### removeAllVersions()
+Get rid of all versions on the episode. Returns the Episode.
+
+#### addVersion()
+Adds the single stored Version object, this can then be cusotmized using `set()`. returns a Version.
+
 ### Version
 
 Currently has no methods.
