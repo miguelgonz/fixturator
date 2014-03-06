@@ -16,7 +16,7 @@ function FixtureCreator(config) {
         apiKey: config.apiKey,
         iblUrl: config.iblUrl,
         cacheDir: config.cacheDir,
-        cacheExpireTime: config.cacheExpireTime || (new Date().getTime() - (10 * 60 * 1000))
+        cacheExpireTime: config.cacheExpireTime || (new Date().getTime() - (60 * 60 * 1000))
     });
 
     that.prefetch = that.fetcher.prefetch().then(function (feeds) {
