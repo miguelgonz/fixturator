@@ -103,6 +103,12 @@ Pass in a masterbrand ID shaped thing and it will prefil fields with the ID plus
 #### getEpisode(n)
 Retrevie the `n`th Episode for the programme, returns a `Episode` object.
 
+#### addEpisode(n)
+Add an episode in position `n`, plucked randomly from the Pool, also ups the count for the programme. Returns the episode added.
+
+#### removeAllItems()
+Removes all child episodes and sets the count of episodes to 0.
+
 ### Group
 
 #### getChild(n)
