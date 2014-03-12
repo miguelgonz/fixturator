@@ -1,6 +1,6 @@
 {
-  "name": "iblFixtures",
-  "version": "0.0.0",
+  "name": "fixturator",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "repository": "",
