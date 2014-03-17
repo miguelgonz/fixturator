@@ -36,7 +36,7 @@ module.exports = function (creator, fixtureName) {
 };
 ```
 
-Or labels
+Or labels:
 
 ```javascript
 module.exports = function (creator, fixtureName) {
@@ -129,7 +129,7 @@ Pass in a masterbrand ID shaped thing and it will prefil fields with the ID plus
 ```javascript
 getEpisode(n)
 ```
-Retrevie the `n`th Episode for the programme, returns a `Episode` object.
+Retrieve the `n`th Episode for the programme, returns a `Episode` object.
 
 ```javascript
 addEpisode(n)
@@ -143,15 +143,17 @@ Removes all child episodes and sets the count of episodes to 0.
 
 ### Group
 
-`getChild(n)``
-Retrevie the `n`th child for the group, returns a `Episode` or `Programme`object.
+```javascript
+getChild(n)
+```
+Retrieve the `n`th child for the group, returns a `Episode` or `Programme` object.
 
 ### Episode
 
 ```javascript
 getVersion(n)
 ```
-Retrevie the `n`th version for the episode, returns a `Version` object.
+Retrieve the `n`th version for the episode, returns a `Version` object.
 
 ```javascript
 removeAllVersions()
