@@ -7,7 +7,7 @@
   "dependencies": {
     "request": "*",
     "querystring": "0.2.0",
-    "q": "*",
+    "q": "~1",
     "underscore": "*"
   },
   "author": "Josh Priestley",
