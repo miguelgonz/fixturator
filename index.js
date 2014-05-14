@@ -34,7 +34,7 @@ function FixtureCreator(config) {
             console.log('Programmes:',that.elementPool.pools.Programme.length)
         }
 
-    }, function (err) {
+    }).fail(function (err) {
         console.log('Error prefetching feeds', err);
         throw err
     });
@@ -56,11 +56,13 @@ FixtureCreator.prototype.createFixture = function(feedName, params) {
         newFeedDefer.resolve(feed)
     }
 
-    newFeedDefer.promise.done(function (feed) {
+    newFeedDefer.promise.then(function (feed) {
         fixture = new Fixture(feedName, feed, that.elementPool, that.config);
 
         defer.resolve(fixture);
-    });
+    }).fail(function (e) {
+        defer.reject(e)
+    }).done();
 
     return defer.promise
 };
