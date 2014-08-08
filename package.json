@@ -1,6 +1,6 @@
 {
   "name": "fixturator",
-  "version": "0.1.9",
+  "version": "0.1.11",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -11,7 +11,8 @@
     "request": "*",
     "querystring": "0.2.0",
     "q": "~1",
-    "underscore": "*"
+    "underscore": "*",
+    "retry": "~0.6.1"
   },
   "author": "Josh Priestley",
   "license": "BSD"

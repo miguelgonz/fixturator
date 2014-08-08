@@ -3,6 +3,8 @@ iBL Fixture Generator
 
 Script fixtures to be generated from live data. Modify only the data you care about and keep fixtures up to date.
 
+Caches the results for 1 hour after a successful request and retries 3 times to allow for API downtime.
+
 Quick start
 -----------
 Setup your fixture file, all fixtures share a common structure so copy paste is your friend:
@@ -59,7 +61,7 @@ module.exports = function (creator, fixtureName) {
 ## Fixture
 
 The base object you operate on has the following methods:
-    
+
 ```javascript
 getEpisode(n) / getProgramme(n) / getElement(n)
 ```
@@ -108,8 +110,8 @@ group.set({
 });
 ```
 
-Elements should also provide helper methods which need to modify multiple attributes 
-to be consistent such as availability (which should modify `status` and 
+Elements should also provide helper methods which need to modify multiple attributes
+to be consistent such as availability (which should modify `status` and
 `availability` information at the same time to be useful).
 
 ### All elements inherit some base fuctions
