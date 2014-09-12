@@ -139,9 +139,15 @@ addEpisode(n)
 Add an episode in position `n`, plucked randomly from the Pool, also ups the count for the programme. Returns the episode added.
 
 ```javascript
+trimTo(n)
+```
+
+Removes all but the first `n` child episodes.
+
+```javascript
 removeAllItems()
 ```
-Removes all child episodes and sets the count of episodes to 0.
+Removes all child episodes and sets the count of episodes to 0 (alias for `trimTo(0)`).
 
 ### Group
 
