@@ -3,7 +3,7 @@ var Fixture = require('./lib/Fixture'),
     Fetcher = require('./lib/Fetcher'),
     q = require('q'),
     fs = require('fs'),
-    feedsPath = '../iblfetcher/feeds/'
+    feedsPath = '../iblfetcher/feeds/';
 
 q.longStackSupport = true;
 
@@ -42,9 +42,10 @@ function FixtureCreator(config) {
 
 FixtureCreator.prototype.createFixture = function(feedName, params) {
     var defer = q.defer(),
-        newFeedDefer = q.defer();
+        newFeedDefer = q.defer(),
         that = this,
-        path = feedName;
+        path = feedName,
+        cloneFeed;
 
     feed = that.feeds[feedName];
     if (feed === undefined) {
@@ -53,7 +54,8 @@ FixtureCreator.prototype.createFixture = function(feedName, params) {
             newFeedDefer.resolve(json);
         });
     } else {
-        newFeedDefer.resolve(feed)
+        cloneFeed = JSON.parse(JSON.stringify(feed));
+        newFeedDefer.resolve(cloneFeed)
     }
 
     newFeedDefer.promise.then(function (feed) {
