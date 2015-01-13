@@ -5,7 +5,7 @@ creator = new Fixtures({
 });
 
 creator.createFixture('categories/films/highlights').then(function (fixture) {
-    var group = fixture.insertGroup(0)
+    var group = fixture.insertGroup(0);
 
     group.set({
         title: 'New Group title for me!',
@@ -14,16 +14,16 @@ creator.createFixture('categories/films/highlights').then(function (fixture) {
         synopses: {
             small: 'A brand new synopses small just making it long to really try and confuse the truncation'
         }
-    })
+    });
 
-    fixture.insertMostPopular(1)
-    fixture.insertGroup(2)
-    fixture.insertGroup(3)
-    fixture.insertGroup(4)
-    fixture.insertGroup(5)
-    fixture.insertGroup(6)
-    fixture.insertGroup(7)
-    fixture.save()
+    fixture.insertMostPopular(1);
+    fixture.insertGroup(2);
+    fixture.insertGroup(3);
+    fixture.insertGroup(4);
+    fixture.insertGroup(5);
+    fixture.insertGroup(6);
+    fixture.insertGroup(7);
+    fixture.save();
 }).done();
 
 creator.createFixture('categories/sport/programmes').then(function (fixture) {
@@ -32,9 +32,9 @@ creator.createFixture('categories/sport/programmes').then(function (fixture) {
         labels: {
             time: 'Hai Guys'
         }
-    }).setMasterbrand('boo_fart')
+    }).setMasterbrand('boo_fart');
 
-    fixture.save()
+    fixture.save();
 }).done();
 
 creator.createFixture('home/highlights').then(function (fixture) {
@@ -47,5 +47,5 @@ creator.createFixture('home/highlights').then(function (fixture) {
         title: 'spanking new group'
     });
 
-    fixture.save()
+    fixture.save();
 }).done();
