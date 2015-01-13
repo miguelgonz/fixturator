@@ -22,21 +22,21 @@ function FixtureCreator(config) {
 
     that.prefetch = that.fetcher.prefetch().then(function (feeds) {
         that.feeds = feeds;
-        for (name in feeds) {
+        for (var name in feeds) {
             var feed = feeds[name];
             that.elementPool.processFeed(feed);
         }
 
         if (config.debug) {
-            console.log('Processed feeds, found the following elements for use')
-            console.log('Episodes:', that.elementPool.pools.Episode.length)
-            console.log('Group:',that.elementPool.pools.Group.length)
-            console.log('Programmes:',that.elementPool.pools.Programme.length)
+            console.log('Processed feeds, found the following elements for use');
+            console.log('Episodes:', that.elementPool.pools.Episode.length);
+            console.log('Group:',that.elementPool.pools.Group.length);
+            console.log('Programmes:',that.elementPool.pools.Programme.length);
         }
 
     }).fail(function (err) {
         console.log('Error prefetching feeds', err);
-        throw err
+        throw err;
     });
 }
 
@@ -55,7 +55,7 @@ FixtureCreator.prototype.createFixture = function(feedName, params) {
         });
     } else {
         cloneFeed = JSON.parse(JSON.stringify(feed));
-        newFeedDefer.resolve(cloneFeed)
+        newFeedDefer.resolve(cloneFeed);
     }
 
     newFeedDefer.promise.then(function (feed) {
@@ -63,10 +63,10 @@ FixtureCreator.prototype.createFixture = function(feedName, params) {
 
         defer.resolve(fixture);
     }).fail(function (e) {
-        defer.reject(e)
+        defer.reject(e);
     }).done();
 
-    return defer.promise
+    return defer.promise;
 };
 
-module.exports = FixtureCreator
+module.exports = FixtureCreator;
