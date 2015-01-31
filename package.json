@@ -15,7 +15,8 @@
     "querystring": "0.2.0",
     "q": "~1",
     "underscore": "*",
-    "retry": "~0.6.1"
+    "retry": "~0.6.1",
+    "queue": "~3.0.10"
   },
   "author": "Josh Priestley",
   "license": "BSD",
